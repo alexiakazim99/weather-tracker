@@ -16,12 +16,21 @@ def get_weather (city): #funktion
 #{city} = sätter in staden ("Stockholm")
 # response = skickar förfrågan till Api genom get - request  och får tillbaka svar i response  
 
-#kontollerar ett vilkor och kör kod endast om vilkoret stämmer 
-if response.status_code == 200:  #kontrollerar serves svar om allt är ok
-    data = response.json () # konverterar servers svar från json till dic, sparar variabeln till data 
-    temperature = data ['current']['temp_c'] # hämtar temperaturen i data 
-    city_name = data['location']['name'] # hämtar stad namnet från data 
-
-    from datetime import datetime # får dagens datum och tid 
-    date = datetime.now().strftime("%Y-%m-%d") # sparar i data 
+try: ## Försök köra denna kod
+        response = requests.get(url)  # Skicka GET-request till WeatherAPI
         
+        if response.status_code == 200: # Om serverns svar är OK (200)
+            data = response.json() # Konvertera JSON till dictionary
+            temperature = data['current']['temp_c'] #hämtar tempratur
+            city_name = data['location']['name'] # hämtar stad 
+            date = datetime.now().strftime("%Y-%m-%d") #hämtar dagens datum
+            
+            return temperature, city_name, date # retunerar alla tre värden 
+        
+        else: # om status ej är 200 
+            print(f"Error: Invalid response status {response.status_code}") # skriv fel medelande 
+            return None # retunerar inget 
+    
+    except Exception as e: # om något går fel i try - blcoket 
+        print(f"Error fetching weather data: {e}") # skriv fel meddelande 
+        return None # retunerar inget 
