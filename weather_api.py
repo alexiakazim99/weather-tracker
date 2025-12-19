@@ -1,4 +1,5 @@
 import requests 
+from datetime import datetime
 #Hämtar ett verktyg/biblioteket 
 # requests låter dig prata med internet (api) anrop
 def get_weather (city): #funktion för att hämta 1 stad 
@@ -54,4 +55,10 @@ def fetch_multiple_cities(cities_list): # funktion för alla städer
 
 
 
-        
+if __name__ == "__main__": 
+    result = get_weather("Stockholm")
+    print (result)
+
+    cities = ["Stockholm", "Göteborg", "Malmö"]
+    results = fetch_multiple_cities(cities)
+    print(results)
