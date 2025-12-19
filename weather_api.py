@@ -1,7 +1,7 @@
 import requests 
 #Hämtar ett verktyg/biblioteket 
 # requests låter dig prata med internet (api) anrop
-def get_weather (city): #funktion 
+def get_weather (city): #funktion för att hämta 1 stad 
     api_key = "67ca9a0af0e84854903142852252911" # variabel #string 
     url = f"http://api.weatherapi.com/v1/current.json?key={api_key}&q={city}" ""  
 
@@ -16,7 +16,7 @@ def get_weather (city): #funktion
 #{city} = sätter in staden ("Stockholm")
 # response = skickar förfrågan till Api genom get - request  och får tillbaka svar i response  
 
-try: ## Försök köra denna kod
+    try: ## Försök köra denna kod
         response = requests.get(url)  # Skicka GET-request till WeatherAPI
         
         if response.status_code == 200: # Om serverns svar är OK (200)
@@ -31,6 +31,27 @@ try: ## Försök köra denna kod
             print(f"Error: Invalid response status {response.status_code}") # skriv fel medelande 
             return None # retunerar inget 
     
-    except Exception as e: # om något går fel i try - blcoket 
+    except Exception as e: # om något går fel i try - blocket
         print(f"Error fetching weather data: {e}") # skriv fel meddelande 
         return None # retunerar inget 
+
+def fetch_multiple_cities(cities_list): # funktion för alla städer
+    try:
+        all_weather = []
+        
+        for city in cities_list:
+            result = get_weather(city)
+            if result:
+                all_weather.append(result)
+        
+        return all_weather
+    
+    except Exception as e:
+        print(f"Error fetching multiple cities: {e}")
+        return []
+    
+
+
+
+
+        
