@@ -14,4 +14,9 @@ def get_city_weather (sity:str):
         return {"error": "Failed to fetch weather"} # retunerar fel medelande 
 
 
+@app.get("/weather-multiple") # get end-point för många städer 
+def get_multiple_weather(cities: str): # definerar funktion som tar en string
+    cities_list = cities.split(",") # konverterar städerna till lista 
+    result = fetch_multiple_cities(cities_list) # anropar fetch_m_city
+    return {"weather_data": result} # retunerar en dict med väderdata 
 
