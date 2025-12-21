@@ -1,11 +1,12 @@
 from fastapi import FastAPI  # importterar fastapi för att skapa api 
 from weather_api import get_weather, fetch_multiple_cities # importterar funktionerna från weather.api
 import uvicorn #importerar servern som lör fastapi 
+from models import Weather, WeatherResponse, ErrorResponse #från filen model.py, hämta dessa 3 klasser 
 
 app = FastAPI() # skapar fastapi- applikation 
 
 @app.get("/weather/{city}") #get- endspoint som hämtar väder för en stad 
-def get_city_weather (city:str): 
+def get_city_weather (city:str) -> WeatherResponse: # "denna funktion returnerar data i WeatherResponse-format från models.py
     result = get_weather(city) #anropar get_weather funktionen, en turpe
 
     if result: # kontrollerar om resut är något (ej none)
@@ -16,7 +17,7 @@ def get_city_weather (city:str):
 
 
 @app.get("/weather-multiple") # get end-point för många städer 
-def get_multiple_weather(cities: str): # definerar funktion som tar en string
+def get_multiple_weather(cities: str) -> WeatherResponse: # definerar funktion som tar en string, # denna funktion returnerar data i WeatherResponse-format från models.py
     cities_list = cities.split(",") # konverterar städerna till lista 
     result = fetch_multiple_cities(cities_list) # anropar fetch_m_city
     return {"weather_data": result} # retunerar en dict med väderdata 
