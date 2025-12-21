@@ -1,6 +1,6 @@
 import requests 
 from datetime import datetime # en modul for time and date
-from databse import import save_weather # hämtar från filen bd, hämtar funktioneen från save_weather 
+from database import save_weather # hämtar från filen bd, hämtar funktioneen från save_weather 
 #Hämtar ett verktyg/biblioteket 
 # requests låter dig prata med internet (api) anrop
 def get_weather (city): #funktion för att hämta 1 stad 

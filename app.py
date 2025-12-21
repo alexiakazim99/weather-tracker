@@ -5,7 +5,7 @@ import uvicorn #importerar servern som lör fastapi
 app = FastAPI() # skapar fastapi- applikation 
 
 @app.get("/weather/{city}") #get- endspoint som hämtar väder för en stad 
-def get_city_weather (sity:str): 
+def get_city_weather (city:str): 
     result = get_weather(city) #anropar get_weather funktionen, en turpe
 
     if result: # kontrollerar om resut är något (ej none)
