@@ -1,5 +1,6 @@
 import requests 
-from datetime import datetime
+from datetime import datetime # en modul for time and date
+from databse import import save_weather # hämtar från filen bd, hämtar funktioneen från save_weather 
 #Hämtar ett verktyg/biblioteket 
 # requests låter dig prata med internet (api) anrop
 def get_weather (city): #funktion för att hämta 1 stad 
@@ -25,6 +26,7 @@ def get_weather (city): #funktion för att hämta 1 stad
             temperature = data['current']['temp_c'] #hämtar tempratur
             city_name = data['location']['name'] # hämtar stad 
             date = datetime.now().strftime("%Y-%m-%d") #hämtar dagens datum
+            save_weather (city_name, temperature, date) # sparar väder i databsen
             
             return temperature, city_name, date # retunerar alla tre värden 
         
@@ -36,23 +38,26 @@ def get_weather (city): #funktion för att hämta 1 stad
         print(f"Error fetching weather data: {e}") # skriv fel meddelande 
         return None # retunerar inget 
 
-def fetch_multiple_cities(cities_list): # funktion för alla städer
+def fetch_multiple_cities(cities_list): # funktion för alla städer (lista)
     try:
-        all_weather = []
+        all_weather = [] # tom lista för att samla alla resultat 
         
-        for city in cities_list:
-            result = get_weather(city)
-            if result:
-                all_weather.append(result)
+        for city in cities_list: # loopa genom varje stad 
+            result = get_weather(city)  # anropar get_weather (sparar automatiskt)
+            if result: # om det går bra 
+                all_weather.append(result) # lägg till i listan 
         
-        return all_weather
+        return all_weather #retunerar alla värden - restultat 
     
-    except Exception as e:
-        print(f"Error fetching multiple cities: {e}")
-        return []
+    except Exception as e: # fångar felet #errorhantering
+        print(f"Error fetching multiple cities: {e}") #visar vad felet är 
+        return [] #retuneratr en tom lista, istället för att kracha 
     
 
-
+# Error hanterining i funktionerna: 
+# get weather hämtar data för en stad, om de misslyckas så får vi None
+# fetch multipe citys hämtar väder för många städer, om de misslyckas så får vi en  tom lista
+#skillnaden är då att fetch skapar en lista och därför vill vi retunera en lista 
 
 
 if __name__ == "__main__": 
