@@ -1,5 +1,5 @@
 import sqlite3
-# databasmotror som ligger redan inbyggdd i python, gör det möjligt att jobba med databasen 
+# databasmotror som ligger redan inbyggdd i python, gör det möjligt att skriva sql kommandon i terminalen 
 
 def init_db():
     try: # försöker köra koden 
