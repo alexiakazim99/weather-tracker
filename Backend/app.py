@@ -1,9 +1,20 @@
 from fastapi import FastAPI  # importterar fastapi för att skapa api 
 from weather_api import get_weather, fetch_multiple_cities # importterar funktionerna från weather.api
-import uvicorn #importerar servern som lör fastapi 
-from models import Weather, WeatherResponse, ErrorResponse #från filen model.py, hämta dessa 3 klasser 
+import uvicorn #importters servern som lör fastapi 
+from models import Weather, WeatherResponse, ErrorResponse #från filen model.py, hämta dessa 3 klasser
+from fastapi.staticfiles import StaticFiles # Importera StaticFiles för att servera statiska filer (CSS, JS, bilder)
+from fastapi.responses import FileResponse # Importera FileResponse för att returnera HTML-filer
+import os # Importera os-modulen för att arbeta med filvägar
+
 
 app = FastAPI() # skapar fastapi- applikation 
+
+frontend_path = os.path.join(os.path.dirname(__file__), "..", "frontend")
+app.mount("/static", StaticFiles(directory=frontend_path), name="static")
+
+@app.get("/")
+async def serve_frontend():
+    return FileResponse(os.path.join(frontend_path, "index.html"))
 
 @app.get("/weather/{city}") #get- endspoint som hämtar väder för en stad 
 def get_city_weather (city:str) -> WeatherResponse: # "denna funktion returnerar data i WeatherResponse-format från models.py
