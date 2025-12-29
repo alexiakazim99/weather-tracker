@@ -1,6 +1,7 @@
 import requests 
 from datetime import datetime # en modul for time and date
-from database import save_weather # hämtar från filen bd, hämtar funktioneen från save_weather 
+from database import save_weather
+ # hämtar från filen bd, hämtar funktioneen från save_weather 
 #Hämtar ett verktyg/biblioteket 
 # requests låter dig prata med internet (api) anrop
 def get_weather (city): #funktion för att hämta 1 stad 
@@ -60,7 +61,7 @@ def fetch_multiple_cities(cities_list): # funktion för alla städer (lista)
 #skillnaden är då att fetch skapar en lista och därför vill vi retunera en lista 
 
 
-if __name__ == "__main__": 
+if __name__ == "__main__":  
     result = get_weather("Stockholm")
     print (result)
 
