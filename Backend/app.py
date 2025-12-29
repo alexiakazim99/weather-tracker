@@ -1,6 +1,7 @@
 from fastapi import FastAPI # importterar fastapi för att skapa api
 from fastapi.middleware.cors import CORSMiddleware # Importera CORS-middleware för att tillåta förfrågningar från React
 from weather_api import get_weather, fetch_multiple_cities # importterar funktionerna från weather.api
+from database import get_all_weather # vi importerar denna funktion från bd 
 import uvicorn # importerar servern som lör fastapi
 
 
@@ -36,32 +37,12 @@ def get_multiple_weather(cities: str): # definerar funktion som tar en string me
     # Returnerar väderdata i rätt format: {"weather_data": [[temp, city, date], [temp, city, date], ...]}
     return {"weather_data": result} # retunerar en dict med väderdata som en lista
 
-
-@app.get("/weather-history") # Skapar en GET-endpoint på vägen /weather-history
-def get_weather_history(): # Definierar funktionen som hämtar all väderhistorik
-    """
-    Denna endpoint returnerar all väderdata som har sparats i databasen.
-    Det visar en historik över alla städer som har sökts på.
-    """
-    import sqlite3 # Importerar SQLite3-modulen för att kommunicera med databasen
-    # Ansluter till databasen weather.db som ligger i backend-mappen
-    conn = sqlite3.connect("weather.db")
-    # Skapar en cursor-objekt som låter oss köra SQL-kommandon
-    cursor = conn.cursor()
-    # Exekverar ett SQL-kommando som väljer ALLA rader från weather-tabellen
-    # * betyder "alla kolumner" (temperature, city, date)
-    cursor.execute("SELECT * FROM weather")
-    # Hämtar alla resultat från föregående SQL-förfrågan och sparar i en lista
-    data = cursor.fetchall()
-    # Stänger anslutningen till databasen för att spara resurser
-    conn.close()
-    
-    # Returnerar ett JSON-objekt med:
-    # - total_searches: Antal städer som har sökts på (längden på listan)
-    # - weather_history: Själva historik-datan (alla städer med temp och datum)
+@app.get("/weather-history")
+def get_weather_history():
+    data = get_all_weather()  # Anropar från database.py
     return {
-        "total_searches": len(data), # Räknar hur många sökningar som gjorts
-        "weather_history": data # Returnerar alla sparade väderdata
+        "total_searches": len(data),
+        "weather_history": data
     }
 
 if __name__ == "__main__":
