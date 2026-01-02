@@ -17,7 +17,7 @@ function App() {
     setResult(null);
 
     try {
-      const response = await fetch(`http://16.171.254.158:8000/weather-multiple?cities=${cities}`)
+      const response = await fetch(`http://127.0.0.1:8000/weather-multiple?cities=${cities}`);
       
       if (!response.ok) {
         throw new Error('Failed to fetch weather data');
