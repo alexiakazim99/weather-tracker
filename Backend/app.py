@@ -1,7 +1,7 @@
 from fastapi import FastAPI # importterar fastapi för att skapa api
 from fastapi.middleware.cors import CORSMiddleware # Importera CORS-middleware för att tillåta förfrågningar från React
 from weather_api import get_weather, fetch_multiple_cities # importterar funktionerna från weather.api
-from database import get_all_weather # vi importerar denna funktion från bd 
+from backend.database import get_all_weather # vi importerar denna funktion från bd 
 import uvicorn # importerar servern som lör fastapi
 
 
