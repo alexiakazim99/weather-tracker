@@ -1,11 +1,10 @@
-from fastapi import FastAPI # importterar fastapi för att skapa api
-from fastapi.middleware.cors import CORSMiddleware # Importera CORS-middleware för att tillåta förfrågningar från React
-from weather_api import get_weather, fetch_multiple_cities # importterar funktionerna från weather.api
-from backend.database import get_all_weather # vi importerar denna funktion från bd 
-import uvicorn # importerar servern som lör fastapi
+from fastapi import FastAPI 
+from fastapi.middleware.cors import CORSMiddleware 
+from weather_api import get_weather, fetch_multiple_cities 
+from database import get_all_weather
+import uvicorn 
 
-
-app = FastAPI() # skapar fastapi-applikation
+app = FastAPI() 
 
 # === CORS CONFIGURATION ===
 # CORS (Cross-Origin Resource Sharing) tillåter React på port 3000 att kommunicera med backend på port 8000
@@ -18,36 +17,31 @@ app.add_middleware(
 )
 
 
-@app.get("/weather/{city}") # get-endpoint som hämtar väder för en stad
-def get_city_weather(city: str): # denna funktion tar en stad som parameter
-    result = get_weather(city) # anropar get_weather funktionen, returnerar en tupel [temp, city, date]
+@app.get("/weather/{city}") 
+def get_city_weather(city: str): 
+    result = get_weather(city) 
    
-    if result: # kontrollerar om result är något (ej none)
-        temperature, city_name, date = result # packar upp de tre värderna från resultat
-        # Returnera samma format som weather-multiple för konsistens
-        return {"weather_data": [[temperature, city_name, date]]} # retunerar weather_data med en lista innehållade väderdata
-    else: # om result är none (något gick fel)
-        return {"error": "Failed to fetch weather"} # retunerar fel medelande
+    if result: 
+        temperature, city_name, date = result 
+    
+        return {"weather_data": [[temperature, city_name, date]]} 
+    else: 
+        return {"error": "Failed to fetch weather"} 
 
-
-@app.get("/weather-multiple") # get-endpoint för många städer
-def get_multiple_weather(cities: str): # definerar funktion som tar en string med städer separerade med komma
-    cities_list = cities.split(",") # konverterar städerna till lista (delad på komma)
-    result = fetch_multiple_cities(cities_list) # anropar fetch_multiple_cities och passar listan
-    # Returnerar väderdata i rätt format: {"weather_data": [[temp, city, date], [temp, city, date], ...]}
-    return {"weather_data": result} # retunerar en dict med väderdata som en lista
+@app.get("/weather-multiple") 
+def get_multiple_weather(cities: str): 
+    cities_list = cities.split(",") 
+    result = fetch_multiple_cities(cities_list) 
+    return {"weather_data": result} 
 
 @app.get("/weather-history")
 def get_weather_history():
-    data = get_all_weather()  # Anropar från database.py
+    data = get_all_weather()  
     return {
         "total_searches": len(data),
         "weather_history": data
     }
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8000) # startar server
+    uvicorn.run(app, host="127.0.0.1", port=8000) 
 
-    #app = din FastAPI-applikation
-    #host="127.0.0.1" = localhost (min dator)
-    #port=8000 = port 8000

@@ -1,7 +1,6 @@
 import requests 
 from datetime import datetime 
-from backend.database import save_weather
-
+from database import save_weather
 
 def get_weather (city):
     api_key = "67ca9a0af0e84854903142852252911" 
